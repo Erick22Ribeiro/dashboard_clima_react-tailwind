@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import './App.css'
+import { buscarClimaPorCidade } from './services/climaService'
+import InformacoesClima from './components/informacoesClima'
 
 function App() {
   
@@ -7,29 +9,17 @@ function App() {
   const [dadosClima, setDadosClima] = useState(null)
   const [carregando, setCarregando] = useState(false)
 
-  const CHAVE_API = '30631c4231f1f21602dfc3849a786c7d' /* adicionar em uma .env depois */
-
   const buscarClima = async () => {
-    //Se não digitou nada, não faz nada
-    if (!cidade.trim()) return 
-
-    setCarregando(true)
-
-    try{
-      const resposta = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cidade}&units=metric&appid=${CHAVE_API}&lang=pt_br`)
-
-      if (!resposta.ok) throw new Error('Cidade não encontrada')
-
-      const dados = await resposta.json()
-
-      setDadosClima(dados)
-    }
-    catch(erro){
-      alert(erro.message)
-      setDadosClima(null)
-    }
-    finally{
-      setCarregando(false)
+    if (!cidade.trim()) return;
+    setCarregando(true);
+    try {
+      const dados = await buscarClimaPorCidade(cidade);
+      setDadosClima(dados);
+    } catch (erro) {
+      alert(erro.message);
+      setDadosClima(null);
+    } finally {
+      setCarregando(false);
     }
   }
 
@@ -65,6 +55,9 @@ function App() {
           {JSON.stringify(dadosClima, null, 2)}
         </pre>
       )}
+
+      <InformacoesClima dados={dadosClima} />
+
     </div>
 
   )
