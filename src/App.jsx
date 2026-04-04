@@ -50,11 +50,11 @@ function App() {
       </div>
 
       {/* Debug Visual: Só para ver se os dados estão chegando */}
-      {dadosClima && (
+      {/* {dadosClima && (
         <pre className="mt-10 p-4 bg-slate-900 rounded border border-slate-800 text-xs overflow-auto max-w-full">
           {JSON.stringify(dadosClima, null, 2)}
         </pre>
-      )}
+      )} */}
 
       <InformacoesClima dados={dadosClima} />
 
